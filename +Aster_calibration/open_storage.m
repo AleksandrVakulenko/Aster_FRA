@@ -6,13 +6,22 @@
 
 function Calibration_set = open_storage(Folder)
 arguments
-    Folder string = './+Aster_calibration/Calibration_matfiles'; % FIXME: may be changed
+    Folder string = '';
+end
+
+Module_path = Fern.open_folder('Aster_FRA');
+Default_folder = [char(Module_path) filesep ...
+    '+Aster_calibration/Calibration_matfiles'];
+
+if isempty(Folder) || Folder == ""
+    Folder = Default_folder;
 end
 
 Files = find_files(Folder);
 Calibration_set = [];
 for i = 1:numel(Files)
 %     klog.disp([num2str(i) '/' num2str(numel(Files))])
+
     Data = load(Files(i).full_path, "calibration_obj");
 
     Calibration_set = [Calibration_set Data.calibration_obj];
