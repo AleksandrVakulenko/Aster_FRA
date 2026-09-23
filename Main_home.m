@@ -66,7 +66,7 @@ Freq_arr_LCR = Freq_arr(F_range_LCR);
 if ~isempty(Freq_arr_LCR)
     LCR_avilable = Aster_FRA_helper.check_LCR_avilable(LCR_type);
     if ~LCR_avilable
-        warning('LCR dev anavilable'); % FIXME: disp
+        warning('LCR dev unavailable'); % FIXME: disp
     end
 else
     % USED is flag what we dont need an LCR measurments
@@ -100,7 +100,7 @@ end
 %   in range from 20 Hz to 200 Hz
 flag = Aster_FRA_helper.is_LCR_results_valid_as_pre(Result_arr_LCR);
 if ~flag
-    disp(['RUN MEASURMENTS FINISH' newline]) % FIXME: disp
+    disp(['RUN PRE MEASURMENTS' newline]) % FIXME: disp
     Results_arr_PRE = Aster_FRA.pre_measurment(Resources, Aster_addr, ...
         Gen_Voltage_level, Ax_arr);
     disp(['PRE MEASURMENTS FINISH' newline]) % FIXME: disp
