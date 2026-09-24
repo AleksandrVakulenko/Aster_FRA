@@ -51,7 +51,7 @@ try
         [C_par, R_par] = TDFRA_fit_viewer.RC_calc(Zfull, Gen_freq, "parallel");
         
 
-        Result = Aster_FRA.LCR_result_type;
+        Result = Aster_FRA.LCR_result_type("LCR");
 
         Result.freq = Gen_freq;
         Result.gen_amp = Gen_Voltage_level;

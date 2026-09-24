@@ -179,7 +179,7 @@ end
 Cur = Volt2*R_Scale;
 Cur_err = Volt2_err*R_Scale;
 
-Result = Aster_FRA.LCR_result_type;
+Result = Aster_FRA.LCR_result_type("Aster_FRA");
 
 Result.freq = freq;
 Result.gen_amp = NaN; % NOTE: add this value on caller side

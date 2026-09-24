@@ -9,6 +9,12 @@ classdef LCR_result_type
         end
     end
 
+    methods (Access = public)
+        function obj = LCR_result_type(source)
+            obj.source = source;
+        end
+    end
+
     properties (Access = public)
 
         freq double; % Measurment frequency
@@ -33,7 +39,7 @@ classdef LCR_result_type
         r_scale double; % V to Amp scale coefficient
         range_n double; % The range number of FRA device used for this measurement
 
-
+        source string; % FIXME (2) make enum or class
     end
 
 end
