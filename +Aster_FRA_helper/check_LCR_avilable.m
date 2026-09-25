@@ -1,4 +1,5 @@
 
+
 function LCR_avilable = check_LCR_avilable(LCR_type)
 arguments
     LCR_type Aster_FRA_helper.LCR_device_name_type
@@ -11,7 +12,8 @@ else
         LCR_dev = LCR_type.init_connection();
         delete(LCR_dev)
         LCR_avilable = true;
-    catch
+    catch ERR
+        Aster_FRA_helper.print_error_msg(ERR);
         LCR_avilable = false;
     end
 end

@@ -3,10 +3,19 @@
 
 % FIXME: upgrade and put in some Fern module
 
-function print_error_msg(ERR)
+function print_error_msg(ERR, func_name)
+arguments
+    ERR
+    func_name string = []
+end
     Stack = ERR.stack;
-    klog.disp(['Error in Aster_FRA.measure function:' newline ...
-        '> ' ERR.message ' <'], "common", 'orange');
+    if ~isempty(func_name)
+        klog.disp(['Error in ' char(func_name) ' function:' newline ...
+            '>' newline ERR.message newline '<'], "common", 'orange');
+    else
+        klog.disp(['Error: ' newline ...
+            '>' newline ERR.message newline '<'], "common", 'orange');
+    end
     for i = 1:numel(Stack)
         disp(' ')
         klog.disp(['File: ' char(Stack(i).file) newline ...
@@ -30,7 +39,7 @@ end
 % try
 %     nyan2()
 % catch ERR
-%     Aster_FRA_helper.print_error_msg(ERR)
+%     Aster_FRA_helper.print_error_msg(ERR, "nyan")
 % end
 % 
 % 

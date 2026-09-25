@@ -1,5 +1,11 @@
 
+% FIXME: (1) rename function
+
+% FIXME: (1) add new-style VISA connection
+
 % FIXME: (3) add DC bias settings
+
+
 function [Result] = LCR_measure(LCR_type, Gen_freq, Gen_Voltage_level, ...
     Time_profile)
 arguments

@@ -44,7 +44,7 @@ try
 catch ERR
     Fit_Result = Aster_FRA.LCR_result_type.empty;
     Extra_data = Aster_FRA.LCR_extra_data_type.empty;
-    Aster_FRA_helper.print_error_msg(ERR);
+    Aster_FRA_helper.print_error_msg(ERR, "Aster_FRA.measure");
     return
 end
 
