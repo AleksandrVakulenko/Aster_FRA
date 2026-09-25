@@ -2,7 +2,22 @@
 
 function [Fit_Result, Extra_data] = single_freq_measurment(Resources, ...
     Aster_addr, Gen_freq, Gen_Voltage_level, DC_bias, Harm_num, Zest, Time_profile, ...
-    Fig_or_ax, Fixed_range, Self_cal_mode, Noisy_env)
+    Fig_or_ax, Fixed_range, Self_cal_mode, Noisy_env, Dev_handles)
+arguments
+    Resources
+    Aster_addr
+    Gen_freq
+    Gen_Voltage_level
+    DC_bias
+    Harm_num
+    Zest
+    Time_profile, ...
+    Fig_or_ax
+    Fixed_range
+    Self_cal_mode
+    Noisy_env
+    Dev_handles = [] % NOTE: if Aster and Gen are inited before
+end
 
 %--------------------------------
 Freq = Gen_freq;
@@ -25,7 +40,7 @@ Settings.use_power_line_filter = Use_power_line_filter;
 try
 [Exit_flag, Ch_data_1, Ch_data_2, R_Scale, Accuracy_conf, ...
     Used_ranges, Aster_range] = Aster_FRA.measure(Resources, Aster_addr, ...
-    Settings, Fig_or_ax, Zest, Fixed_range, Self_cal_mode);
+    Settings, Fig_or_ax, Zest, Fixed_range, Self_cal_mode, Dev_handles);
 catch ERR
     Fit_Result = Aster_FRA.LCR_result_type.empty;
     Extra_data = Aster_FRA.LCR_extra_data_type.empty;
@@ -79,17 +94,20 @@ if numel(Axes_arr) == 2 && all(isvalid(Axes_arr))
     drawnow
 end
 
+Data_quality = calc_data_quality(Score_1, Score_2, Max_score);
 
 % FIXME: use debug function to show results
 if ~isempty(Result_1) && ~isempty(Result_2)
     Fit_Result = Aster_FRA.do_FRA_result(Result_1, Result_2, Freq, Aster_range);
     Fit_Result.gen_amp = Gen_Voltage_level; % NOTE set values of voltage level
     Fit_Result.gen_dc = DC_bias; % NOTE: set value of DC bias level
+    Fit_Result.quality = Data_quality;
 else
     Fit_Result = Aster_FRA.LCR_result_type.empty;
 end
 
 Extra_data = Aster_FRA.LCR_extra_data_type;
+Extra_data.freq = Freq;
 Extra_data.ch_data_1 = Ch_data_1;
 Extra_data.ch_data_2 = Ch_data_2;
 Extra_data.result_1 = Result_1;
@@ -106,3 +124,47 @@ Extra_data.used_ranges = Used_ranges;
 Extra_data.aster_range = Aster_range;
 
 end
+
+
+function Data_quality = calc_data_quality(Score_1, Score_2, Max_score)
+
+Ch1_w = 1;
+Ch2_w = 2;
+w_sum = Ch1_w + Ch2_w;
+
+Q1 = calc_single_data_quality(Score_1, Max_score);
+Q2 = calc_single_data_quality(Score_2, Max_score);
+
+Data_quality = Ch1_w/w_sum * Q1 + Ch2_w/w_sum * Q2;
+
+Data_quality = round(Data_quality*1000)/1000;
+Data_quality = Data_quality*100;
+
+end
+
+
+function Data_quality = calc_single_data_quality(Score, Max_score)
+
+if Score < 0
+    Data_quality = 0;
+else
+    Data_quality = (Score./Max_score).^2;
+end
+
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

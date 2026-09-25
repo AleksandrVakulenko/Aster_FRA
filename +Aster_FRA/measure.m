@@ -1,6 +1,6 @@
 function [Exit_flag, Ch_data_1, Ch_data_2, R_Scale, Accuracy_conf, ...
     Used_ranges, Last_used_range] = measure(Resources, Aster_addr, ...
-    Settings, Fig, Zest, Fixed_range, Self_cal_mode)
+    Settings, Fig, Zest, Fixed_range, Self_cal_mode, Dev_handles)
 arguments
     Resources
     Aster_addr
@@ -9,6 +9,17 @@ arguments
     Zest = []
     Fixed_range = []
     Self_cal_mode = false
+    Dev_handles = []
+end
+
+if isempty(Dev_handles)
+    No_init_mode = false;
+    [Aster, Gen] = Aster_FRA.connect_to_devices(Aster_addr);
+else
+    klog.disp("No init mode is active", "debug_full", "orange");
+    No_init_mode = true;
+    Aster = Dev_handles.aster;
+    Gen = Dev_handles.gen;
 end
 
 GUI_range_ind = Resources.range_ind;
@@ -58,9 +69,6 @@ end
 %--------------------------------
 
 Last_used_range = [];
-Gen_type = "Aster_dev";
-Gen_addr = [];
-[Aster, Gen] = Aster_FRA.connect_to_devices(Aster_addr, Gen_type, Gen_addr);
 
 ERR = [];
 try
@@ -104,11 +112,13 @@ try
     end
 
     % FIXME: (0) changing Aster connection
-    Aster.set_connection_mode("I2V");
-    Aster.ADC_1_direction("internal"); % "internal", "external"
-    Aster.ADC_2_direction("internal"); % "internal", "external"
-%     Aster.Gen_direction("Internal"); % "Internal", "Lock_in", "LCR", "External"
-    Aster.initiate(); % FIXME: (1) updates current direction to internal I2V
+    if ~No_init_mode
+        Aster.set_connection_mode("I2V");
+        Aster.initiate(); % FIXME: (1) updates current direction to internal I2V
+        Aster.ADC_1_direction("internal"); % "internal", "external"
+        Aster.ADC_2_direction("internal"); % "internal", "external"
+    end
+    
     % FIXME: (1) Self_cal_mode is now in debug state (need refactor)
     if Self_cal_mode
         Aster.Self_calibration_select("CAP_200p"); % "none", "CAP_200p", "RES_10M", "BOTH"
@@ -121,7 +131,9 @@ try
     end
 
     [~, R_Scale, Aster_Range] = Aster_FRA.set_range(Aster, Range_init_num);
-    GUI_range_ind.set_range(Aster_Range, Possible_ranges);
+    if ~isempty(GUI_range_ind) && isvalid(GUI_range_ind)
+        GUI_range_ind.set_range(Aster_Range, Possible_ranges);
+    end
     % NOTE: update time and accuracy profiles
     [Time_profile_new, is_changed] = ...
         Aster_FRA.max_time_profile(Time_profile, Aster_Range);
@@ -199,7 +211,9 @@ try
                     stop = true;
                 else
                     [flag, R_Scale, Aster_Range] = Aster_FRA.set_range(Aster, Aster_Range);
-                    GUI_range_ind.set_range(Aster_Range, Possible_ranges);
+                    if ~isempty(GUI_range_ind) && isvalid(GUI_range_ind)
+                        GUI_range_ind.set_range(Aster_Range, Possible_ranges);
+                    end
                     if Aster_Range == max(Possible_ranges)
                         Channel_settings_2.underrange_force = true;
                     end
@@ -227,17 +241,21 @@ try
         end
     end
 catch ERR
-    Aster_FRA.disconnect_devices(Aster, Gen)
-    klog.disp('ERR finish // devices closed', 'common')
+    if ~No_init_mode
+        Aster_FRA.disconnect_devices(Aster, Gen);
+        klog.disp('ERR finish | devices closed', 'common')
+    end
     rethrow(ERR)
 end
 
-
-Aster_FRA.disconnect_devices(Aster, Gen)
+if ~No_init_mode
+    Aster_FRA.disconnect_devices(Aster, Gen);
+end
 Accuracy_conf = Profile.accuracy_conf;
 
 Full_main_time = toc(Full_main_time_counter);
-klog.disp([newline '-----------------------------------------' newline ...
+klog.disp([newline ...
+    '-----------------------------------------' newline ...
     '             Main fit finish' newline ...
     '-----------------------------------------' newline ...
     'Time: ' num2str(Full_main_time) ' s' newline ...

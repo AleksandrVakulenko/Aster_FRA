@@ -1,6 +1,14 @@
 
 
-function Results_arr_PRE = pre_measurment(Resources, Aster_addr, Gen_Voltage_level, Ax_arr)
+function Results_arr_PRE = pre_measurment(Resources, Aster_addr, ...
+    Gen_Voltage_level, Ax_arr, Dev_handles)
+arguments
+    Resources
+    Aster_addr
+    Gen_Voltage_level
+    Ax_arr
+    Dev_handles = [] % NOTE: if Aster and Gen are inited before
+end
 
 Noisy_env = true;
 Self_cal = false;
@@ -12,11 +20,11 @@ Self_cal = false;
     Zest = struct('type', 'res', 'value', 50e3); % FIXME: magic constant
     Fit_Result_1 = Aster_FRA.single_freq_measurment(Resources, Aster_addr, ...
         Gen_freq(1), Gen_Voltage_level, DC_bias, Harm_num, Zest, ...
-        Time_profile, Ax_arr, [], Self_cal, Noisy_env);
+        Time_profile, Ax_arr, [], Self_cal, Noisy_env, Dev_handles);
 
     Fit_Result_2 = Aster_FRA.single_freq_measurment(Resources, Aster_addr, ...
         Gen_freq(2), Gen_Voltage_level, DC_bias, Harm_num, Zest, ...
-        Time_profile, Ax_arr, [], Self_cal, Noisy_env);
+        Time_profile, Ax_arr, [], Self_cal, Noisy_env, Dev_handles);
     
     Results_arr_PRE = [Fit_Result_1 Fit_Result_2];
     

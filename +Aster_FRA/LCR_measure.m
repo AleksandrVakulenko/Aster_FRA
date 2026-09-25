@@ -77,6 +77,8 @@ try
         Result.voltage = NaN;
         Result.voltage_error = NaN;
 
+        Result.quality = NaN; % FIXME: (2) use it somehow
+
     end
 
 catch err

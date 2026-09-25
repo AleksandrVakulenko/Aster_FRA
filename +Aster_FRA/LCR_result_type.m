@@ -17,29 +17,30 @@ classdef LCR_result_type
 
     properties (Access = public)
 
-        freq double; % Measurment frequency
-        gen_amp double; % Measurment voltage level
-        gen_dc double; % Measurment DC bias level
+        freq double = NaN; % Measurment frequency
+        gen_amp double = NaN; % Measurment voltage level
+        gen_dc double = NaN; % Measurment DC bias level
 
-        res_abs double; % Resistance absolute value
-        res_abs_err double; % Error of resistance absolute value
+        res_abs double = NaN; % Resistance absolute value
+        res_abs_err double = NaN; % Error of resistance absolute value
 
-        phi double; % Resistance phase
-        phi_err double; % Error of resistance phase
+        phi double = NaN; % Resistance phase
+        phi_err double = NaN; % Error of resistance phase
 
-        harm Aster_FRA.LCR_harm_result_type ;% Resistance harmonics struct
+        harm Aster_FRA.LCR_harm_result_type;% Resistance harmonics struct
 
-        cap_par double; % Cap value for result estimation
+        cap_par double = NaN; % Cap value for result estimation
 
-        current double;
-        current_error double;
-        voltage double;
-        voltage_error double;
+        current double = NaN;
+        current_error double = NaN;
+        voltage double = NaN;
+        voltage_error double = NaN;
 
-        r_scale double; % V to Amp scale coefficient
-        range_n double; % The range number of FRA device used for this measurement
+        r_scale double = NaN; % V to Amp scale coefficient
+        range_n double = NaN; % The range number of FRA device used for this measurement
 
-        source string; % FIXME (2) make enum or class
+        source string = ""; % FIXME (2) make enum or class
+        quality double = NaN; % NOTE: 0 - 100 scale quality
     end
 
 end

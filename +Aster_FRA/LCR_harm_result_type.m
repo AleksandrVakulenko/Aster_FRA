@@ -12,11 +12,11 @@ classdef LCR_harm_result_type
     properties (Access = public)
 
         % FIXME: (3) Maybe add basic freq
-        n double;
-        res double;
-        res_err double;
-        phi double;
-        phi_err double;
+        n double = NaN;
+        res double = NaN;
+        res_err double = NaN;
+        phi double = NaN;
+        phi_err double = NaN;
 
     end
 

@@ -11,20 +11,20 @@ classdef LCR_extra_data_type
 
     properties (Access = public)
 
-        freq double; % Measurment frequency
+        freq double = NaN; % Measurment frequency
         ch_data_1 TDFRA_fit_core.Ch_data_type; % V ch
         ch_data_2 TDFRA_fit_core.Ch_data_type; % I ch
 
         result_1 TDFRA_fit_core.Result_type;
         result_2 TDFRA_fit_core.Result_type;
 
-        residuals_1 double
-        residuals_2 double
+        residuals_1 double = NaN
+        residuals_2 double = NaN
 
-        score
+        score % FIXME: add type
 
-        used_ranges double % all used ranges
-        aster_range double % range for this results
+        used_ranges double = NaN % all used ranges
+        aster_range double = NaN % range for this results
 
         % FIXME: (3) delete this
         DEBUG % legacy debug data
