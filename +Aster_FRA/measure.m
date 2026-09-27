@@ -66,6 +66,8 @@ Time_to_underrange = 0.1*Period; % [s] / FIXME: (3) why?
 if Time_to_underrange < 0.3
     Time_to_underrange = 0.3; % FIXME: (3) magic constant
 end
+
+Time_to_overrange = Time_to_underrange;
 %--------------------------------
 
 Last_used_range = [];
@@ -79,12 +81,14 @@ try
     Channel_settings_1.underrange_force = Underrange_force_1;
     Channel_settings_1.max_ch1_limit = MAX_CH1_LIMIT;
     Channel_settings_1.time_to_underrange = Time_to_underrange;
+    Channel_settings_1.time_to_overrange = Time_to_overrange;
     Channel_settings_1.overrange_tolerance = Overrange_tolerance;
     Channel_settings_1.fs = Fs_new;
 
     Channel_settings_2.underrange_force = Underrange_force_2;
     Channel_settings_2.max_ch1_limit = MAX_CH2_LIMIT;
     Channel_settings_2.time_to_underrange = Time_to_underrange;
+    Channel_settings_2.time_to_overrange = Time_to_overrange;
     Channel_settings_2.overrange_tolerance = Overrange_tolerance;
     Channel_settings_2.fs = Fs_new;
 
