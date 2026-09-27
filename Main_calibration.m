@@ -174,8 +174,18 @@ Fixed_range_arr = 3*ones(size(Freq_arr));
 
 % FIXME: add LCR terminate before start
 
-LCR_type = {"LCR_E4980AL", []};
-Aster_addr = 6;
+if ispc
+    % NOTE: case for full test
+    Aster_addr = 6;
+    LCR_dev_class_name = "LCR_8230_dev"; % LCR_E4980AL
+    LCR_dev_GPIB_num = 7; % []
+elseif isunix
+    % NOTE: case for home linux test
+    Aster_addr = "/dev/ttyACM0";
+    LCR_dev_class_name = "";
+    LCR_dev_GPIB_num = [];
+end
+
 
 Harm_num = [ ];
 Time_profile = "common"; % "ultra_fast", "common", "fine", "most_accurate"
@@ -188,6 +198,7 @@ Ax_arr = [Fig.UserData.axes_top Fig.UserData.axes_bot];
 Stop_button = Fig.UserData.stop_button;
 Resources.stop_button = Stop_button;
 Resources.underrange_ind = Fig.UserData.underrange_ind;
+Resources.range_ind = Fig.UserData.range_ind;
 
 % NOTE: terminate LCR
 try
@@ -210,8 +221,9 @@ else
 end
 
 
-% Results_arr_PRE = Aster_FRA.pre_measurment(Resources, Aster_addr, Gen_Voltage_level, Ax_arr);
-Results_arr_PRE = [];
+Results_arr_PRE = Aster_FRA.pre_measurment(Resources, Aster_addr, ...
+    Gen_Voltage_level, Ax_arr);
+% Results_arr_PRE = [];
 % Zest = struct('type', 'cap', 'value', 10e-12);
 % Zest = struct('type', 'res', 'value', 10e3);
 disp('PRE MEASURMENTS FINISH')

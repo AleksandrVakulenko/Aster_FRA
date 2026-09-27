@@ -46,6 +46,7 @@ if ~isempty(Fixed_range) && any(Fixed_range == [1 2 3 4 5 6])
     Underrange_force_2 = true;
     Overrange_tolerance = 100; % [%]
     Auto_range = false;
+    Possible_ranges = Fixed_range;
 else
     Auto_range = true;
     Possible_ranges = Aster_FRA.get_possible_ranges(Freq);
