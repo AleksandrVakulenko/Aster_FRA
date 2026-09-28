@@ -70,6 +70,7 @@
 %
 %   See also Aster_FRA.connect_to_devices, Aster_FRA.Gen_initiate,
 %            Aster_FRA.ADC_init, Aster_FRA.set_range,
-%            data_gathering_loop, TDFRA_fit_core.get_time_config.
+%            TDFRA_fit_core.data_gathering_loop, 
+%            TDFRA_fit_core.get_time_config.
 
 

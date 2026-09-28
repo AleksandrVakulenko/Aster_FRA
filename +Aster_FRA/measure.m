@@ -172,7 +172,8 @@ try
         Settings_g.channel_settings_1 = Channel_settings_1;
         Settings_g.channel_settings_2 = Channel_settings_2;
 
-        [Exit_flag, Ch_data_1, Ch_data_2] = data_gathering_loop(Resources, ...
+        [Exit_flag, Ch_data_1, Ch_data_2] = ...
+            TDFRA_fit_core.data_gathering_loop(Resources, ...
             Aster, Freq, Harm_num, Profile, Settings_g, Fig);
 
         Aster.CMD_data_stream(0);
