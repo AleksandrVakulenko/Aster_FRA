@@ -120,7 +120,9 @@ end
 Harm_2_out_arr = Harm_calc_and_corr(Result_2, freq, Volt1, ...
     Volt1_err, CH_1_P, CH_1_Pe, R_Scale, Range_N, Calibration_set);
 
-Harm_2_out_arr = Nan_harm_clear(Harm_2_out_arr);
+% FIXME: do not use whit function without new test
+% NOTE: maybe could delete good harms
+% Harm_2_out_arr = Nan_harm_clear(Harm_2_out_arr);
 
 
 % Res_cplx = Res*cos(Phase_diff/180*pi) + Res*1i*sin(Phase_diff/180*pi);
