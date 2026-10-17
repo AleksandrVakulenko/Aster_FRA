@@ -1,10 +1,10 @@
-name:
-Aster_FRA
-
-dependencies:
-Time_domain_FRA
-aDevice
-klog
-
-
-info:
+{
+  "name": "Aster_FRA",
+  "dependecies": [
+    "Time_domain_FRA",
+    "aDevice",
+    "klog"
+  ],
+  "info": "Frequency response analysis by Aster device.",
+  "Tegs": "FRA; frequency response analysis"
+}
