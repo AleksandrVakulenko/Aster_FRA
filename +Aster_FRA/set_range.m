@@ -11,7 +11,7 @@ else
     flag = true;
 
     [R_num, R_time, FB_res] = Aster.get_current_range;
-    R_sense = 1/FB_res;
+    R_sense = 1/FB_res; % FIMXE: calc here and below
 
     if R_num ~= Range
         Res_list = [200 10e3 1e6 100e6 10e9 1e12];
@@ -20,7 +20,7 @@ else
 
         I_range_top = Aster.set_sensitivity(Current_pred);
         R_sense = 5/I_range_top;
-        R_sense = 1/R_sense;
+        R_sense = 1/R_sense; % FIMXE: calc here and above
 
         R_time = 0;
 

@@ -13,7 +13,7 @@ if Zest.type == "cap"
 elseif Zest.type == "res"
     Res = Zest.value;
 else
-
+    error('unreachable')
 end
 
 Current = Amp/Res;
